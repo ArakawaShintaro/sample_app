@@ -6,7 +6,8 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       log_in user
-      remember user
+      params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+      binding.pry
       redirect_to user
     else
       # renderなので、flashだと残り続けてしまう
@@ -17,7 +18,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    log_out
-    redirect_to root_path
+    log_out if logged_in?
+    redirect_to login_path
   end
 end
