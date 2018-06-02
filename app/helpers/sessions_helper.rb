@@ -43,11 +43,11 @@ module SessionsHelper
   end
 
   def redirect_back_or(default)
-    redirect_to sessoin[:forwarding_url] || default
+    redirect_to session[:forwarding_url] || default
     session.delete(:forwarding_url)
   end
 
   def store_location
-    sessoin[:forwarding_url] = request.url if request.get?
+    session[:forwarding_url] = request.url if request.get?
   end
 end

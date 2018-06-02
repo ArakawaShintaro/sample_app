@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :microposts, dependent: :destroy
+
   #トークンはデータベースに保存せずに実装する必要がある
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -73,6 +75,10 @@ class User < ApplicationRecord
 
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+
+  def feed
+    Micropost.where("user_id = ?", id)
   end
 
   private
